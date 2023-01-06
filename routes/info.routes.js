@@ -5,7 +5,7 @@ const multerS3 = require('multer-s3');
 var aws = require('aws-sdk')
 
 
-const Refran = require('./../models/refranes.models')
+const Info = require('./../models/info.models')
 require('dotenv').config();
 
 //CONFIG S3
@@ -34,18 +34,18 @@ router.post("/", upload.single('file'), async(req, res, next) => {
   try{
   const {lema, significado} = req.body;
 
-  const refran_nuevo = Refran({
+  const newInfo = Info({
       lema,
       significado,
     });
 
      if (req.file) {
     const {location} = req.file
-    refran_nuevo.setImgUrl(location)
+    newInfo.setImgUrl(location)
   }
 
-  const guardar = await refran_nuevo.save()
-  res.send(refran_nuevo);
+  const guardar = await newInfo.save()
+  res.send(newInfo);
 
   }catch(err){
     next(err)
@@ -56,44 +56,44 @@ router.post("/", upload.single('file'), async(req, res, next) => {
 
 //VER LOS REFRANES AÑADIDOS
 router.get('/', async(req, res) => {
-  const refran = await Refran.find();
-  res.json(refran);
+  const info = await Info.find();
+  res.json(info);
 });
 
 //VER PALABRA POR ID
 router.get('/:id', async(req, res) => {
-  const refran = await Refran.findById(req.params.id);
-  res.json(refran);
+  const info = await Info.findById(req.params.id);
+  res.json(info);
 });
 
 //ELIMINAR REFRAN
 router.delete('/:id', async(req, res) => {
-  await Refran.findByIdAndRemove(req.params.id);
+  await Info.findByIdAndRemove(req.params.id);
   res.json("eliminada");
 });
 
 //EDITAR REFRAN SIN IMAGEN
 router.put('/:id', async (req, res) => {
-  await Refran.findByIdAndUpdate(req.params.id, req.body)
+  await Info.findByIdAndUpdate(req.params.id, req.body)
   res.json("actualizado");
 })
 
 //EDITAR REFRAN CON IMAGEN
 router.put('withImage/:id', upload.single('file'), async (req, res, next) => {
   try{
-    const {lema, isoglosa, acto_de_habla, imagenUrl, significado} = req.body;
+    const {lema, imagenUrl, significado} = req.body;
   
-    const refranEditado = {
+    const editedInfo = {
       lema,
       imagenUrl,
       significado
     }
     if (req.file) {
       const {location} = req.file
-      refranEditado.imagenUrl = location
+      editedInfo.imagenUrl = location
     }
   
-    await Refran.findByIdAndUpdate(req.params.id, refranEditado)
+    await Info.findByIdAndUpdate(req.params.id, editedInfo)
     res.json("actualizado");
   }catch(err){
     next(err)

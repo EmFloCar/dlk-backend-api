@@ -32,17 +32,13 @@ var upload = multer({
 //AÑADIR NUEVAS PALABRAS
 router.post("/", upload.single('file'), async(req, res, next) => {
   try{
-  const { lema, informacion_gramatical, hiperonimo, etimologia, significado, ejemplo, imagenUrl, isoglosa } = req.body;
+  const { lema, significado, ejemplo, imagenUrl } = req.body;
 
   const palabra_nueva = Palabra({
       lema,
-      informacion_gramatical,
-      hiperonimo,
-      etimologia,
       significado,
       ejemplo,
       imagenUrl,
-      isoglosa,
     });
 
   if (req.file) {

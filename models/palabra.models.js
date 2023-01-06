@@ -4,13 +4,9 @@ const Schema = mongoose.Schema;
 const palabraSchema = new Schema({
 
   lema: String,
-  informacion_gramatical: String,
-  hiperonimo: String,
-  etimologia: String,
   significado: String,
   ejemplo: String,
   imagenUrl: Object, 
-  isoglosa: String 
 
 });
 

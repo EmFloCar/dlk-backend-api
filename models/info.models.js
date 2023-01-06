@@ -1,17 +1,17 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
- const refranSchema = new Schema({
+ const infoSchema = new Schema({
 
    lema: String,
    significado: String,
    imagenUrl: Object
  })
 
-refranSchema.methods.setImgUrl = function(location){
+ infoSchema.methods.setImgUrl = function(location){
   this.imagenUrl = location
 }
 
-const Refran = mongoose.model("refran", refranSchema);
+const Info = mongoose.model("info", infoSchema);
 
-module.exports = Refran;
+module.exports = Info;
